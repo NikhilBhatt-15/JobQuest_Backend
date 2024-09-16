@@ -44,7 +44,7 @@ const editProfile = TryCatch(async (req, res, next) => {
 });
 
 const getJobs = TryCatch(async (req, res, next) => {
-    const jobs = await prisma.job.findMany();
+   const jobs = await prisma.job.findMany();
     res.status(200).json({
         success: true,
         jobs

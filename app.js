@@ -25,7 +25,7 @@ app.use("/api/v1/auth",auth);
 app.use(authMiddleware);
 
 app.use("/api/v1/user",user);
-app.use("api/v1/employer",employer);
+app.use("/api/v1/employer",employer);
 
 
 app.use(errorMiddleware)

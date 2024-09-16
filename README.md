@@ -1,4 +1,4 @@
-# Job Hunt Application
+# Job Quest Application
 
 This is a Job Hunt application built with Node.js, Express, and Prisma. It allows employers to create profiles, post jobs, and manage job listings.
 
@@ -22,8 +22,7 @@ This is a Job Hunt application built with Node.js, Express, and Prisma. It allow
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/NikhilBhatt-15/jobhunt.git
-    cd jobhunt
+    git clone https://github.com/NikhilBhatt-15/JobQuest_Backend.git
     ```
 
 2. Install dependencies:

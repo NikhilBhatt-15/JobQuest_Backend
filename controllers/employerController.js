@@ -59,6 +59,7 @@ const postJobs = TryCatch(async (req,res,next)=>{
     if(!title || !description || !location || !jobType || !category || !salary ){
         return next(new ErrorHandler("All fields are required",400));
     }
+
     const job = await prisma.job.create({
         data:{
             title,
@@ -81,7 +82,7 @@ const getPostedJobs = TryCatch(async (req,res,next)=>{
 
     const jobs = await prisma.job.findMany({
         where:{
-            employerId:req.user.id
+            employerId:req.user.employer.id
         }
     });
     res.status(200).json({
@@ -100,7 +101,7 @@ const deleteJob = TryCatch(async (req,res,next)=>{
     if(!job){
         return next(new ErrorHandler("Job not found",404));
     }
-    if(job.employerId !== req.user.id){
+    if(job.employerId !== req.user.employer.id){
         return next(new ErrorHandler("Not authorized to delete job",401));
     }
     await prisma.job.delete({
