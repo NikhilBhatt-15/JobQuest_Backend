@@ -34,7 +34,7 @@ This is a Job Hunt application built with Node.js, Express, and Prisma. It allow
 3. Set up environment variables:
    Create a `.env` file in the root directory and add the following:
     ```dotenv
-    DATABASE_URL="postgresql://postgres:nikhil@localhost:5432/jobhunt"
+    DATABASE_URL="postgresql://username:password@localhost:5432/db_name"
     JWT_SECRET="your_jwt_secret"
     PORT=5000
     CLOUDINARY_URL=cloudinary://your_cloudinary_url
