@@ -1,0 +1,175 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String      @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String   @unique
+  password  String
+  role      Role     @default(JOBSEEKER)
+  Profile   Profile?
+  employer  employer?
+  applications Application[]
+  savedJobs savedJob[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Profile{
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  userId    String   @unique
+  imageUrl       String?  // URL of the image in Cloudinary
+  imagePublicId  String?  // Public ID of the image in Cloudinary
+  bio       String
+  age       Int
+  gender    Gender
+  phone_no  String
+  location  String
+  resume_url String?
+  skills    Skill[]
+  experience experience[]
+  education education[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Skill{
+  id        String   @id @default(cuid())
+  profile   Profile  @relation(fields: [profileId], references: [id],onDelete: Cascade)
+  profileId String   @unique
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model experience{
+  id        String   @id @default(cuid())
+  profile   Profile  @relation(fields: [profileId], references: [id],onDelete: Cascade)
+  profileId String   @unique
+  title     String
+  company   String
+  location  String
+  from      DateTime
+  to        DateTime?
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model education{
+  id        String   @id @default(cuid())
+  profile   Profile  @relation(fields: [profileId], references: [id],onDelete: Cascade)
+  profileId String   @unique
+  degree    String
+  school    String
+  field     String
+  from      DateTime
+  to        DateTime?
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model employer{
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  userId    String   @unique
+  company   String
+  location  String
+  phone_no  String
+  website   String
+  jobs      job[]
+  imageUrl       String?  // URL of the image in Cloudinary
+  imagePublicId  String?  // Public ID of the image in Cloudinary
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model job{
+  id        String   @id @default(cuid())
+  employer  employer @relation(fields: [employerId], references: [id],onDelete: Cascade)
+  employerId String
+  title     String
+  location  String
+  jobType   JobType
+  jobLocation JobLocation
+  salary    Int
+  description String
+  applications Application[]
+  savedJobs savedJob[]
+  postedAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Application{
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  userId    String
+  job       job      @relation(fields: [jobId], references: [id],onDelete: Cascade)
+  jobId     String
+  status    ApplicationStatus @default(PENDING)
+  appliedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model savedJob{
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  userId    String
+  job       job      @relation(fields: [jobId], references: [id],onDelete: Cascade)
+  jobId     String
+  savedAt   DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+enum ApplicationStatus{
+  PENDING
+  REVIEWING
+  INTERVIEWED
+  OFFERED
+  REJECTED
+}
+
+
+enum Role {
+  JOBSEEKER
+  EMPLOYER
+  ADMIN
+}
+
+enum Gender{
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum JobLocation{
+  REMOTE
+  ONSITE
+  HYBRID
+}
+
+enum JobType{
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  INTERNSHIP
+  TEMPORARY
+}
+
