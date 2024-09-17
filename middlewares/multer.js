@@ -10,3 +10,4 @@ const upload = multer({
 
 export const pfUpload = upload.fields([{name:'avatar',maxCount:1},{name:'resume',maxCount:1}]);
 export const singleUpload =upload.single('avatar',1);
+export const resumeUpload = upload.single('resume',1);

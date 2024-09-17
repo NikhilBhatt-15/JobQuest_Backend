@@ -59,13 +59,22 @@ This is a Job Hunt application built with Node.js, Express, and Prisma. It allow
 ### Job Seeker Routes
 
 - `POST /profile` - Create job seeker profile
-- `GET /profile` - Get job seeker profile
 - `PUT /profile` - Update job seeker profile
+- `GET /profile` - Get job seeker profile
+- `POST /profile/resume` - Upload resume
+- `PUT /profile/resume` - Update resume
+- `POST /profile/education` - Add education
+- `POST /profile/experience` - Add experience
+- `POST /profile/skills` - Add skills
+- `DELETE /profile/skills/:id` - Delete a skill
+- `GET /skills` - Get all skills
 - `GET /jobs` - Get all jobs
+
 
 ### Employer Routes
 
 - `POST /profile` - Create employer profile
+- `PUT /profile` - Update employer profile
 - `GET /profile` - Get employer profile
 - `GET /jobs` - Get posted jobs
 - `POST /jobs` - Post a new job

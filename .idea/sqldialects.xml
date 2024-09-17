@@ -2,5 +2,6 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/prisma/migrations/20240916113059_employermodelchanges/migration.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/prisma/migrations/20240917055106_updated_schema_of_all/migration.sql" dialect="PostgreSQL" />
   </component>
 </project>

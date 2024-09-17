@@ -13,8 +13,5 @@ const employerMiddleware = TryCatch(async(req,res,next)=>{
     });
     next();
 });
-
-
-
-
 export default employerMiddleware;
+

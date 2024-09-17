@@ -7,6 +7,7 @@ const app = express.Router();
 
 app.use(employerMiddleware);
 app.post("/profile",singleUpload,createEmployer);
+app.put("/profile",singleUpload,createEmployer);
 app.get("/profile",getEmployer);
 app.get("/jobs",getPostedJobs);
 app.post("/jobs",postJobs);

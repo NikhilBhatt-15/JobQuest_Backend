@@ -4,19 +4,37 @@ import prisma from "../prisma/prismaClient.js";
 
 const createEmployer = TryCatch(async(req,res,next)=>{
     const {company,location,phone_no,website} = req.body;
-    if(!company || !location || !phone_no || !website){
-        return next(new ErrorHandler("All fields are required",400));
-    }
     const employerExist = await prisma.employer.findFirst({
         where:{
             userId:req.user.id
         }
     });
+    const result = req.file? await uploadFilesToCloudinary(req.file.path):null;
+
     if(employerExist){
-        return next(new ErrorHandler("Employer already exists",400));
+        if(result && result.public_id){
+            await deleteFilesFromCloudinary(employerExist.imagePublicId);
+        }
+        const newEmployer = await prisma.employer.update({
+            where:{
+                userId:req.user.id
+            },
+            data:{
+                company:company?company:employerExist.company,
+                location:location?location:employerExist.location,
+                phone_no:phone_no?phone_no:employerExist.phone_no,
+                website:website?website:employerExist.website,
+                imagePublicId: result?(result.public_id?result.public_id:employerExist.imagePublicId):employerExist.imagePublicId,
+                imageUrl: result?(result.url?result.url:employerExist.imageUrl):employerExist.imageUrl
+            }
+        });
+        return res.status(200).json({
+            success:true,
+            employer:newEmployer,
+            message:"Employer updated successfully"
+        });
     }
 
-    const result = req.file? await uploadFilesToCloudinary(req.file.path):null;
     const user = req.user;
     const employer = await prisma.employer.create(
         {
@@ -36,7 +54,6 @@ const createEmployer = TryCatch(async(req,res,next)=>{
         employer,
         message:"Employer created successfully"
     });
-
 })
 
 const getEmployer = TryCatch(async(req,res,next)=> {

@@ -25,7 +25,7 @@ const uploadFilesToCloudinary = async (file) => {
 
 }
 const deleteFilesFromCloudinary = async (file) => {
-    await v2.uploader.destroy(file);
+     await v2.uploader.destroy(file);
 }
 const passwordValidator = (password) => {
     const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
