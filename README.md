@@ -80,6 +80,23 @@ This is a Job Hunt application built with Node.js, Express, and Prisma. It allow
 - `POST /jobs` - Post a new job
 - `DELETE /jobs/:id` - Delete a job
 
+### Admin Routes
+
+- `POST /register` - Register a new admin
+- `POST /login` - Login as admin
+- `GET /users` - Get all users
+- `DELETE /user/:id` - Remove a user
+- `GET /employers` - Get all employers
+- `DELETE /employer/:id` - Remove an employer
+- `GET /jobs` - Get all jobs
+- `DELETE /job/:id` - Delete a job
+- `POST /skills` - Add skills
+- `DELETE /skills` - Remove skills
+- `POST /skills/activate` - Activate skills
+- `POST /skills/deactivate` - Deactivate skills
+- `GET /skills` - Get skills
+
+
 ## License
 
 This project is licensed under the MIT License.

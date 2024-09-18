@@ -6,6 +6,7 @@ import {errorMiddleware} from "./middlewares/error.js";
 import user from "./routes/user.js";
 import {authMiddleware} from "./middlewares/authMiddleware.js";
 import employer from "./routes/employer.js";
+import admin from "./routes/admin.js";
 dotenv.config({
     path:"./.env"
 });
@@ -21,6 +22,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/v1/auth",auth);
+app.use("/api/v1/admin",admin);
 
 app.use(authMiddleware);
 
