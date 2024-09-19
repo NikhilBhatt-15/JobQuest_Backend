@@ -11,16 +11,16 @@ const register = TryCatch(async (req, res) => {
         throw new ErrorHandler("All fields are required",400 );
     }
     if (!passwordValidator(password)) {
-        throw new ErrorHandler("Password must be 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter",400);
+        throw new ErrorHandler("Password must be 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter",422);
     }
     if (!emailValidator(email)) {
-        throw new ErrorHandler( "Email is not valid",400);
+        throw new ErrorHandler( "Email is not valid",422);
     }
     if(firstName.length<3 || firstName.length>20){
-        throw new ErrorHandler("First name must be between 3 to 20 characters",400);
+        throw new ErrorHandler("First name must be between 3 to 20 characters",422);
     }
     if(lastName.length<3 || lastName.length>20){
-        throw new ErrorHandler("Last name must be between 3 to 20 characters",400);
+        throw new ErrorHandler("Last name must be between 3 to 20 characters",422);
     }
     const userExists = await prisma.user.findUnique({
         where: {
@@ -28,7 +28,7 @@ const register = TryCatch(async (req, res) => {
         }
     });
     if (userExists) {
-        throw new ErrorHandler( "User already exists",400);
+        throw new ErrorHandler( "User already exists",409);
     }
 
     const encryptedPassword = await bcrypt.hash(password, 10);
@@ -61,11 +61,11 @@ const login = TryCatch(async (req, res) => {
         }
     });
     if (!user) {
-        throw new ErrorHandler("Invalid credentials",404);
+        throw new ErrorHandler("Invalid credentials",401);
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-        throw new ErrorHandler("Invalid credentials",404);
+        throw new ErrorHandler("Invalid credentials",401);
     }
     const token = jwt.sign({id:user.id},process.env.JWT_SECRET,{
         expiresIn: 1000*60*60*24
@@ -98,5 +98,8 @@ const allUsers = TryCatch(async(req,res,next)=>{
         users
     });
 })
+
+
+
 
 export {register,allUsers,login,logout,profile};

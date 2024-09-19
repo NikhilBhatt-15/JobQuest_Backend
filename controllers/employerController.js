@@ -63,7 +63,7 @@ const getEmployer = TryCatch(async(req,res,next)=> {
         }
     });
     if (!employer) {
-        return next(new ErrorHandler("Profile not found", 404));
+        return next(new ErrorHandler("Profile not found", 400));
     }
     res.status(200).json({
         success: true,
@@ -116,7 +116,7 @@ const deleteJob = TryCatch(async (req,res,next)=>{
         }
     });
     if(!job){
-        return next(new ErrorHandler("Job not found",404));
+        return next(new ErrorHandler("Job not found",400));
     }
     if(job.employerId !== req.user.employer.id){
         return next(new ErrorHandler("Not authorized to delete job",401));

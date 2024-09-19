@@ -35,7 +35,7 @@ const authMiddleware = TryCatch(async (req, res, next) => {
         }
     });
     if (!user) {
-        return next(new ErrorHandler("User not found", 404));
+        return next(new ErrorHandler("User not found", 400));
     }
     const {password,createdAt,updatedAt, ...rest} = user;
     req.user = rest;

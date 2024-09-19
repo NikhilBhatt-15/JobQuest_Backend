@@ -20,6 +20,7 @@ model User {
   email     String   @unique
   password  String
   role      Role     @default(JOBSEEKER)
+  fcmTokens fcmToken[]
   Profile   Profile?
   employer  employer?
   applications Application[]
@@ -28,6 +29,17 @@ model User {
   updatedAt DateTime @updatedAt
 
   @@index([email])
+}
+
+model fcmToken{
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  userId    String
+  token     String  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([token, userId])
 }
 
 model Profile{

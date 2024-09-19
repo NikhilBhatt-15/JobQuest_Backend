@@ -259,7 +259,7 @@ const removeUser = TryCatch(async (req,res)=>{
         }
     });
     if(!user){
-        throw new ErrorHandler("User not found",404);
+        throw new ErrorHandler("User not found",400);
     }
     const profile = await prisma.profile.findUnique({
         where: {
@@ -293,7 +293,7 @@ const removeEmployer= TryCatch(async (req,res)=>{
        }
    });
     if(!employer){
-         throw new ErrorHandler("Employer not found",404);
+         throw new ErrorHandler("Employer not found",400);
     }
     const employerProfile = await prisma.employer.findUnique({
          where:{
@@ -324,7 +324,7 @@ const deleteJob  = TryCatch(async (req,res,next)=>{
          }
     });
     if(!job){
-         return next(new ErrorHandler("Job not found",404));
+         return next(new ErrorHandler("Job not found",400));
     }
     await prisma.job.delete({
         where:{

@@ -50,7 +50,7 @@ This is a Job Hunt application built with Node.js, Express, and Prisma. It allow
 
 ## API Endpoints
 
-### Auth Routes
+### Auth Routes 
 
 - `POST /register` - Register a new user
 - `POST /login` - Login a user

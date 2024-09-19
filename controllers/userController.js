@@ -114,7 +114,7 @@ const getProfile = TryCatch(async (req, res, next) => {
         }
     });
     if (!profile) {
-        return next(new ErrorHandler("Profile not found", 404));
+        return next(new ErrorHandler("Profile not found", 400));
     }
     // only show bio,age,gender,phone_no,location,imageUrl
     const newProfile = {...profile};
@@ -145,7 +145,7 @@ const addResume = TryCatch(async (req, res, next) => {
         }
     });
     if(!profile){
-        return next(new ErrorHandler("Profile not found",404));
+        return next(new ErrorHandler("Profile not found",400));
     }
     if(profile.resumePublicId)await deleteFilesFromCloudinary(profile.resumePublicId);
     const result = await uploadFilesToCloudinary(req.file.path);
@@ -175,7 +175,7 @@ const addEducation = TryCatch(async (req, res, next) => {
         }
     });
     if(!profile){
-        return next(new ErrorHandler("Profile not found",404));
+        return next(new ErrorHandler("Profile not found",400));
     }
 //     education is an array of objects
 //     each object has school,degree,field,from,to
@@ -207,7 +207,7 @@ const addSkills = TryCatch(async (req, res, next) => {
         }
     });
     if(!profile){
-        return next(new ErrorHandler("Profile not found",404));
+        return next(new ErrorHandler("Profile not found",400));
     }
     const promises = skills.map(async (skill)=>{
         const skillExist = await prisma.skill.findFirst({
@@ -260,7 +260,7 @@ const removeSkills = TryCatch(async (req, res, next) => {
         }
     });
     if(!profile){
-        return next(new ErrorHandler("Profile not found",404));
+        return next(new ErrorHandler("Profile not found",400));
     }
     const promises = skills.map(async (skill)=>{
         const skillExist = await prisma.skill.findFirst({
@@ -305,7 +305,7 @@ const addExperience = TryCatch(async (req, res, next) => {
         }
     });
     if (!profile) {
-        return next(new ErrorHandler("Profile not found", 404));
+        return next(new ErrorHandler("Profile not found", 400));
     }
     const promises = experience.map(async(exp)=>{
         return prisma.experience.create({
@@ -334,5 +334,6 @@ const getDefaultSkills = TryCatch(async (req, res, next) => {
         skills
     });
 });
+
 
 export {createProfile,getJobs,getProfile,addSkills,addResume,addEducation,removeSkills,addExperience,getDefaultSkills};
