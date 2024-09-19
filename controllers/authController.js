@@ -28,7 +28,7 @@ const register = TryCatch(async (req, res) => {
         }
     });
     if (userExists) {
-        throw new ErrorHandler( "User already exists",409);
+        throw new ErrorHandler( "User already exists",400);
     }
 
     const encryptedPassword = await bcrypt.hash(password, 10);
