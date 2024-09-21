@@ -266,14 +266,17 @@ const removeUser = TryCatch(async (req,res)=>{
             userId: userId
         }
     });
-    const imagePublicId = profile.imagePublicId;
-    const resumePublicId = profile.resumePublicId;
-    if(imagePublicId){
-        await deleteFilesFromCloudinary(imagePublicId);
+    if(profile){
+        const imagePublicId = profile.imagePublicId;
+        const resumePublicId = profile.resumePublicId;
+        if(imagePublicId){
+            await deleteFilesFromCloudinary(imagePublicId);
+        }
+        if(resumePublicId){
+            await deleteFilesFromCloudinary(resumePublicId);
+        }
     }
-    if(resumePublicId){
-        await deleteFilesFromCloudinary(resumePublicId);
-    }
+
     await prisma.user.delete({
         where:{
             id:userId

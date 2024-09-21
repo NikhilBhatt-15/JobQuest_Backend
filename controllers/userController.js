@@ -59,7 +59,31 @@ const createProfile = TryCatch(async (req, res, next) => {
 });
 
 const getJobs = TryCatch(async (req, res, next) => {
-   const jobs = await prisma.job.findMany();
+   const jobs = await prisma.job.findMany(
+   );
+   const promises = jobs.map(async(job)=> {
+       const employer = await prisma.employer.findUnique({
+           where: {
+               id: job.employerId
+           },
+           select: {
+               company: true,
+               location: true,
+               phone_no: true,
+               website: true,
+               imageUrl: true
+           }
+       });
+       job["company_name"] = employer.company;
+       job["company_location"] = employer.location;
+       job["company_phone_no"] = employer.phone_no;
+       job["company_website"] = employer.website;
+       job["company_imageUrl"] = employer.imageUrl;
+       delete job.employerId;
+       return job;
+
+   });
+    await Promise.all(promises);
     res.status(200).json({
         success: true,
         jobs
