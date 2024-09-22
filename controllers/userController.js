@@ -125,15 +125,6 @@ const getProfile = TryCatch(async (req, res, next) => {
                     from:true,
                     to:true
                 }
-            },
-            skills:{
-                include:{
-                    skill:{
-                        select:{
-                            name:true
-                        }
-                    }
-                }
             }
         }
     });
@@ -147,13 +138,23 @@ const getProfile = TryCatch(async (req, res, next) => {
     delete newProfile.createdAt;
     delete newProfile.updatedAt;
     delete newProfile.imagePublicId;
+    delete newProfile.resumePublicId;
+    const skills = await prisma.profileSkill.findMany({
+        where:{
+            profileId:profile.id
+        },
+        include:{
+            skill:true
+        }
+    });
 
     newProfile["email"]=req.user.email;
     newProfile["firstname"]=req.user.firstName;
     newProfile["lastname"]=req.user.lastName;
+    newProfile["skills"]=skills.map((skill)=>skill.skill.name);
     res.status(200).json({
         success: true,
-        newProfile
+        profile:newProfile
     });
 
 });

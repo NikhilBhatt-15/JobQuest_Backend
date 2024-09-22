@@ -1,5 +1,5 @@
 import {TryCatch} from "../middlewares/error.js";
-import {ErrorHandler, uploadFilesToCloudinary} from "../utils/utility.js";
+import {deleteFilesFromCloudinary, ErrorHandler, uploadFilesToCloudinary} from "../utils/utility.js";
 import prisma from "../prisma/prismaClient.js";
 
 const createEmployer = TryCatch(async(req,res,next)=>{
@@ -12,7 +12,7 @@ const createEmployer = TryCatch(async(req,res,next)=>{
     const result = req.file? await uploadFilesToCloudinary(req.file.path):null;
 
     if(employerExist){
-        if(result && result.public_id){
+        if(result && result.public_id && employerExist.imagePublicId){
             await deleteFilesFromCloudinary(employerExist.imagePublicId);
         }
         const newEmployer = await prisma.employer.update({
