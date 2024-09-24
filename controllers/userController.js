@@ -61,6 +61,12 @@ const createProfile = TryCatch(async (req, res, next) => {
 const getJobs = TryCatch(async (req, res, next) => {
    const jobs = await prisma.job.findMany(
    );
+   const savedJobs = await prisma.savedJob.findMany({
+         where:{
+              userId:req.user.id
+         }
+    });
+
    const promises = jobs.map(async(job)=> {
        const employer = await prisma.employer.findUnique({
            where: {
@@ -74,11 +80,13 @@ const getJobs = TryCatch(async (req, res, next) => {
                imageUrl: true
            }
        });
+       const isSaved = savedJobs.some((savedJob)=>savedJob.jobId===job.id);
        job["company_name"] = employer.company;
        job["company_location"] = employer.location;
        job["company_phone_no"] = employer.phone_no;
        job["company_website"] = employer.website;
        job["company_imageUrl"] = employer.imageUrl;
+       job["isBookmarked"] = isSaved;
        delete job.employerId;
        return job;
 
