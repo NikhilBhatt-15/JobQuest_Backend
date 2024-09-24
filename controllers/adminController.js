@@ -4,8 +4,6 @@ import {deleteFilesFromCloudinary, emailValidator, ErrorHandler, passwordValidat
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-
-
 const registerAdmin = TryCatch(async (req, res) => {
     const {firstName,lastName,email,password} = req.body;
     if (!email || !password || !firstName || !lastName) {
@@ -200,7 +198,6 @@ const activateSkill= TryCatch(async (req,res)=>{
     });
 });
 
-
 const deactivateSkill= TryCatch(async (req,res)=> {
     const {skills} = req.body;
     if (!skills) {
@@ -230,6 +227,7 @@ const deactivateSkill= TryCatch(async (req,res)=> {
     });
 
 });
+
 const getSkills = TryCatch(async (req,res)=>{
     const status = req.query.status;
 
@@ -341,7 +339,6 @@ const deleteJob  = TryCatch(async (req,res,next)=>{
     });
 
 });
-
 
 export {registerAdmin,
     loginAdmin,

@@ -8,6 +8,7 @@ import {authMiddleware} from "./middlewares/authMiddleware.js";
 import employer from "./routes/employer.js";
 import admin from "./routes/admin.js";
 import fcmToken from "./routes/fcm-token.js";
+import job from "./routes/job.js";
 
 dotenv.config({
     path:"./.env"
@@ -26,6 +27,7 @@ app.use("/api/v1/auth",auth);
 app.use("/api/v1/admin",admin);
 
 app.use(authMiddleware);
+app.use("/api/v1/jobs",job);
 app.use("/api/v1",fcmToken);
 app.use("/api/v1/user",user);
 app.use("/api/v1/employer",employer);

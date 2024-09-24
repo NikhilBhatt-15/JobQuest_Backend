@@ -360,5 +360,4 @@ const getDefaultSkills = TryCatch(async (req, res, next) => {
     });
 });
 
-
 export {createProfile,getJobs,getProfile,addSkills,addResume,addEducation,removeSkills,addExperience,getDefaultSkills};
