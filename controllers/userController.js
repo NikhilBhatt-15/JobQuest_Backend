@@ -77,7 +77,7 @@ const getJobs = TryCatch(async (req, res, next) => {
                location: true,
                phone_no: true,
                website: true,
-               imageUrl: true
+               imageUrl: true,
            }
        });
        const isSaved = savedJobs.some((savedJob)=>savedJob.jobId===job.id);

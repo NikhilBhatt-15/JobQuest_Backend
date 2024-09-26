@@ -160,7 +160,7 @@ const editJob = TryCatch(async (req,res,next)=>{
             jobType: jobType?jobType:job.jobType,
             jobLocation: category?category:job.jobLocation,
             salary: salary?salary:job.salary,
-            applyUrl: applyUrl?applyUrl:job.applyUrl
+            applyUrl: applyUrl?applyUrl:(job.applyUrl?job.applyUrl:null)
         }
     });
     res.status(200).json({
