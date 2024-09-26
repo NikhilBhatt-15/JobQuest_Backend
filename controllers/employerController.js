@@ -72,9 +72,12 @@ const getEmployer = TryCatch(async(req,res,next)=> {
 });
 
 const postJobs = TryCatch(async (req,res,next)=>{
-    const {title,description,location,jobType,category,salary} = req.body;
+    const {title,description,location,jobType,category,salary,applyUrl} = req.body;
     if(!title || !description || !location || !jobType || !category || !salary ){
         return next(new ErrorHandler("All fields are required",400));
+    }
+    if(!applyUrl){
+        return next(new ErrorHandler("Apply url is required",400));
     }
 
     const job = await prisma.job.create({
@@ -85,6 +88,7 @@ const postJobs = TryCatch(async (req,res,next)=>{
             jobType,
             jobLocation:category,
             salary,
+            applyUrl,
             employerId:req.user.employer.id
         }
     });
@@ -133,4 +137,37 @@ const deleteJob = TryCatch(async (req,res,next)=>{
 
 });
 
-export {createEmployer,postJobs,getPostedJobs,deleteJob,getEmployer};
+const editJob = TryCatch(async (req,res,next)=>{
+    const job_id = req.params.id;
+    const {title,description,location,jobType,category,salary,applyUrl} = req.body;
+    const job = await prisma.job.findUnique({
+        where:{
+            employerId:req.user.employerId,
+            id:job_id
+        }
+    });
+    if(!job){
+        return next(new ErrorHandler("Job not found",400));
+    }
+    const newJob = await prisma.job.update({
+        where:{
+            id:job_id
+        },
+        data:{
+            title: title?title:job.title,
+            description: description?description:job.description,
+            location: location?location:job.location,
+            jobType: jobType?jobType:job.jobType,
+            jobLocation: category?category:job.jobLocation,
+            salary: salary?salary:job.salary,
+            applyUrl: applyUrl?applyUrl:job.applyUrl
+        }
+    });
+    res.status(200).json({
+        success:true,
+        job:newJob,
+        message:"Job updated successfully"
+    });
+})
+
+export {createEmployer,postJobs,getPostedJobs,deleteJob,getEmployer,editJob};

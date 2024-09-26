@@ -161,6 +161,7 @@ model job{
   jobLocation JobLocation
   salary    Int
   description String
+  applyUrl   String?
   applications Application[]
   savedJobs savedJob[]
   requiredSkills JobSkill[]
