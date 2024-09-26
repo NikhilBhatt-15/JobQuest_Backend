@@ -17,7 +17,7 @@ app.post("/profile",singleUpload,createEmployer);
 app.put("/profile",singleUpload,createEmployer);
 app.get("/profile",getEmployer);
 app.get("/jobs",getPostedJobs);
-app.put("/jobs",editJob);
+app.put("/jobs/:id",editJob);
 app.post("/jobs",postJobs);
 app.delete("/jobs/:id",deleteJob);
 
