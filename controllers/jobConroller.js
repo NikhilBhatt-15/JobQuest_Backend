@@ -95,9 +95,11 @@ const unsaveJob = TryCatch(async(req,res,next)=>{
 });
 
 const getSavedJobs = TryCatch(async(req,res,next)=>{
+
+
     const savedJobs = await prisma.savedJob.findMany({
         where:{
-            userId:req.userId
+            userId:req.user.id
         },
         select:{
             job:true
