@@ -130,6 +130,7 @@ const getProfile = TryCatch(async (req, res, next) => {
                     title:true,
                     company:true,
                     location:true,
+                    description:true,
                     from:true,
                     to:true
                 }
