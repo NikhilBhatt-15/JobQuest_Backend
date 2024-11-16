@@ -55,7 +55,7 @@ const createProfile = TryCatch(async (req, res, next) => {
         );
     }
 
-    if(firstname || lastname || password || email){
+    if(firstName || lastName || password || email){
         if ( password && !passwordValidator(password)) {
             throw new ErrorHandler("Password must be 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter",422);
         }
