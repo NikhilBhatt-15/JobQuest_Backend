@@ -37,28 +37,24 @@ const createProfile = TryCatch(async (req, res, next) => {
             }
 
         });
-
-        return res.status(200).json({
-            success:true,
-            profile:newProfile,
-            message:"Profile updated successfully"
-        });
+    }
+    else {
+        const profile = await prisma.profile.create(
+            {
+                data:{
+                    userId: req.user.id,
+                    bio,
+                    age,
+                    gender,
+                    phone_no,
+                    location,
+                    imagePublicId: result.public_id,
+                    imageUrl: result.url
+                }
+            }
+        );
     }
 
-    const profile = await prisma.profile.create(
-        {
-            data:{
-                userId: req.user.id,
-                bio,
-                age,
-                gender,
-                phone_no,
-                location,
-                imagePublicId: result.public_id,
-                imageUrl: result.url
-            }
-        }
-    )
     if(firstname || lastname || password || email){
         if ( password && !passwordValidator(password)) {
             throw new ErrorHandler("Password must be 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter",422);
@@ -85,13 +81,20 @@ const createProfile = TryCatch(async (req, res, next) => {
                 }
             }
         )
-    }
 
+    }
+    const profile = await prisma.profile.findUnique({
+        where:{
+            userId:req.user.id
+        }
+    });
     res.status(200).json({
         success: true,
         profile,
         message: "Profile created successfully"
     });
+
+
 });
 
 const getJobs = TryCatch(async (req, res, next) => {
