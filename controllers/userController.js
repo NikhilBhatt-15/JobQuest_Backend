@@ -8,6 +8,7 @@ import {
     uploadFilesToCloudinary
 } from "../utils/utility.js";
 import User from "../routes/user.js";
+import bcrypt from "bcrypt";
 
 const createProfile = TryCatch(async (req, res, next) => {
 
@@ -80,7 +81,7 @@ const createProfile = TryCatch(async (req, res, next) => {
                     firstName:firstName?firstName:req.user.firstName,
                     lastName:lastName?lastName:req.user.lastName,
                     email:email?email:req.user.email,
-                    password:password?password:req.user.password
+                    password:password?bcrypt.hash(password,10):req.user.password
                 }
             }
         )
