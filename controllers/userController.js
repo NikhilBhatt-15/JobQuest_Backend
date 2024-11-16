@@ -62,12 +62,11 @@ const createProfile = TryCatch(async (req, res, next) => {
         if ( email && !emailValidator(email)) {
             throw new ErrorHandler( "Email is not valid",422);
         }
-        if(firstName && firstName.length<3 || firstName.length>20){
-            throw new ErrorHandler("First name must be between 3 to 20 characters",422);
+        let encryptedPassword;
+        if(password){
+            encryptedPassword = await bcrypt.hash(password, 10);
         }
-        if(lastName && lastName.length<3 || lastName.length>20){
-            throw new ErrorHandler("Last name must be between 3 to 20 characters",422);
-        }
+
         const user = await prisma.user.update(
             {
                 where:{
@@ -77,7 +76,7 @@ const createProfile = TryCatch(async (req, res, next) => {
                     firstName:firstName?firstName:req.user.firstName,
                     lastName:lastName?lastName:req.user.lastName,
                     email:email?email:req.user.email,
-                    password:password?bcrypt.hash(password,10):req.user.password
+                    password:password?encryptedPassword:req.user.password
                 }
             }
         )
