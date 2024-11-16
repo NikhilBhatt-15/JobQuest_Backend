@@ -1,10 +1,17 @@
 import {TryCatch} from "../middlewares/error.js";
 import prisma from "../prisma/prismaClient.js";
-import {deleteFilesFromCloudinary, ErrorHandler, uploadFilesToCloudinary} from "../utils/utility.js";
+import {
+    deleteFilesFromCloudinary,
+    emailValidator,
+    ErrorHandler,
+    passwordValidator,
+    uploadFilesToCloudinary
+} from "../utils/utility.js";
+import User from "../routes/user.js";
 
 const createProfile = TryCatch(async (req, res, next) => {
 
-    const {bio,gender,phone_no,location} = req.body;
+    const {bio,gender,phone_no,location,firstName,lastName,email,password} = req.body;
     const age = parseInt(req.body.age);
     const profileExist = await prisma.profile.findFirst({
         where:{
@@ -51,6 +58,34 @@ const createProfile = TryCatch(async (req, res, next) => {
             }
         }
     )
+    if(firstname || lastname || password || email){
+        if ( password && !passwordValidator(password)) {
+            throw new ErrorHandler("Password must be 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter",422);
+        }
+        if ( email && !emailValidator(email)) {
+            throw new ErrorHandler( "Email is not valid",422);
+        }
+        if(firstName && firstName.length<3 || firstName.length>20){
+            throw new ErrorHandler("First name must be between 3 to 20 characters",422);
+        }
+        if(lastName && lastName.length<3 || lastName.length>20){
+            throw new ErrorHandler("Last name must be between 3 to 20 characters",422);
+        }
+        const user = await prisma.user.update(
+            {
+                where:{
+                    id:req.user.id
+                },
+                data:{
+                    firstName:firstName?firstName:req.user.firstName,
+                    lastName:lastName?lastName:req.user.lastName,
+                    email:email?email:req.user.email,
+                    password:password?password:req.user.password
+                }
+            }
+        )
+    }
+
     res.status(200).json({
         success: true,
         profile,
