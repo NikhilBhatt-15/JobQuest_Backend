@@ -99,7 +99,4 @@ const allUsers = TryCatch(async(req,res,next)=>{
     });
 })
 
-
-
-
 export {register,allUsers,login,logout,profile};

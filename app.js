@@ -23,6 +23,9 @@ app.use(express.json());
 
 
 // Routes
+app.get("/",(req,res)=>{
+    res.send("Welcome to Job Portal API");
+});
 app.use("/api/v1/auth",auth);
 app.use("/api/v1/admin",admin);
 

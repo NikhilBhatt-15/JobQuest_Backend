@@ -232,6 +232,7 @@ enum JobLocation{
   HYBRID
 }
 
+
 enum JobType{
   FULL_TIME
   PART_TIME
